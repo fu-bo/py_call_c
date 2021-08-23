@@ -23,7 +23,7 @@ PyCallCFun::PyCallCFun(/* args */) {
 PyCallCFun::~PyCallCFun() {
 }
 
-PyObject* PyCallCFun::addMulMatrix(PyObject *matrixObj, int factor) {
+PyObject* fcnAddMulMatrix(PyObject *matrixObj, int factor) {
     std::cout << "c++: factor = " << factor << "\n";
     PyArrayObject * matrixArray = reinterpret_cast<PyArrayObject *>(matrixObj);
     int matrixNDim = PyArray_NDIM(matrixArray);
@@ -62,9 +62,6 @@ PyObject* PyCallCFun::addMulMatrix(PyObject *matrixObj, int factor) {
         addMat[i] = intmatrixPtr[i] + factor;
         mulMat[i] = intmatrixPtr[i] * factor;
     }
-    std::cout << "outputNumel = " << outputNumel <<"\n";
-    std::cout << "matrixSize[0] = " << matrixSize[0] <<"\n";
-    std::cout << "matrixSize[1] = " << matrixSize[1] <<"\n";
 
     PyObject* addMatArray = PyArray_SimpleNewFromData(2, matrixSize, PyArray_INT32, addMat);
     PyObject* mulMatArray = PyArray_SimpleNewFromData(2, matrixSize, PyArray_INT32, mulMat);
@@ -79,6 +76,10 @@ PyObject* PyCallCFun::addMulMatrix(PyObject *matrixObj, int factor) {
     return outputTuple;
 }
 
+PyObject* PyCallCFun::addMulMatrix(PyObject *matrixObj, int factor) {
+    return fcnAddMulMatrix(matrixObj, factor);
+}
+
 using namespace boost::python;
 BOOST_PYTHON_MODULE(py_call_c_fun)
 {
@@ -87,4 +88,5 @@ BOOST_PYTHON_MODULE(py_call_c_fun)
     // "py_call_c_fun", init<std::string>()).def(
         "add_mul_matrix", &PyCallCFun::addMulMatrix
     );
+    def("fcn_add_mul_matrix", fcnAddMulMatrix);
 }
