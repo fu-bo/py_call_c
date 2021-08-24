@@ -4,6 +4,7 @@
 #endif
 
 #include <iostream>
+#include <string>
 #include <numpy/arrayobject.h>
 #include <boost/python.hpp>
 
@@ -80,6 +81,15 @@ PyObject* PyCallCFun::addMulMatrix(PyObject *matrixObj, int factor) {
     return fcnAddMulMatrix(matrixObj, factor);
 }
 
+bool fcnPrintString(PyObject *stringObj) {
+    PyObject* objectsRepresentation = PyObject_Repr(stringObj);
+    const char* charStr = PyUnicode_AsUTF8(objectsRepresentation);
+    printf("c++: char string - %s\n", charStr);
+    std::string str(charStr);
+    std::cout << "c++: std::string - " << str << "\n";
+    return true;
+}
+
 using namespace boost::python;
 BOOST_PYTHON_MODULE(py_call_c_fun)
 {
@@ -89,4 +99,5 @@ BOOST_PYTHON_MODULE(py_call_c_fun)
         "add_mul_matrix", &PyCallCFun::addMulMatrix
     );
     def("fcn_add_mul_matrix", fcnAddMulMatrix);
+    def("fcn_print_string", fcnPrintString);
 }
