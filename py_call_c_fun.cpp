@@ -96,11 +96,10 @@ bool fcnPrintString(PyObject *stringObj) {
 using namespace boost::python;
 BOOST_PYTHON_MODULE(py_call_c_fun)
 {
-    class_ <PyCallCFun> (
-    "py_call_c_fun").def(
-    // "py_call_c_fun", init<std::string>()).def(
-        "add_mul_matrix", &PyCallCFun::addMulMatrix
-    );
+    class_ <PyCallCFun> ("py_call_c_fun")
+    // .def("py_call_c_fun", init<std::string>())
+    .def("add_mul_matrix", &PyCallCFun::addMulMatrix) // Add another line of this for more class functions
+    ;
     def("fcn_add_mul_matrix", fcnAddMulMatrix);
     def("fcn_print_string", fcnPrintString);
 }
