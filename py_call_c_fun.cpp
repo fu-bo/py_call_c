@@ -87,6 +87,9 @@ bool fcnPrintString(PyObject *stringObj) {
     printf("c++: char string - %s\n", charStr);
     std::string str(charStr);
     std::cout << "c++: std::string - " << str << "\n";
+    str.erase(0, 1);
+    str.erase(str.size() - 1);
+    std::cout << "c++: std::string updated - " << str << "\n";
     return true;
 }
 
