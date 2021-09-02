@@ -47,25 +47,19 @@ PyObject* fcnAddMulMatrix(PyObject *matrixObj, int factor) {
     }
 
     // Py_Initialize();
-    import_array();
-
-    npy_intp inputSize[2];
-    inputSize[0] = 2;
-    inputSize[1] = 3;
-    double inputData[] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
-    PyObject* input = PyArray_SimpleNewFromData(2, inputSize, PyArray_FLOAT64, inputData);
+    import_array(); // This line is important
 
     // Construct outputs
     int outputNumel = matrixRows * matrixCols;
-    int* addMat = new int[outputNumel]; // int32_t
-    int* mulMat = new int[outputNumel]; // int32_t
+    int64_t* addMat = new int64_t[outputNumel]; // int32_t
+    int64_t* mulMat = new int64_t[outputNumel]; // int32_t
     for (int i = 0; i < outputNumel; i++) {
         addMat[i] = intmatrixPtr[i] + factor;
         mulMat[i] = intmatrixPtr[i] * factor;
     }
 
-    PyObject* addMatArray = PyArray_SimpleNewFromData(2, matrixSize, PyArray_INT32, addMat);
-    PyObject* mulMatArray = PyArray_SimpleNewFromData(2, matrixSize, PyArray_INT32, mulMat);
+    PyObject* addMatArray = PyArray_SimpleNewFromData(2, matrixSize, PyArray_INT64, addMat);
+    PyObject* mulMatArray = PyArray_SimpleNewFromData(2, matrixSize, PyArray_INT64, mulMat);
     PyObject* outputTuple = PyTuple_New(2);
     int flagSuccess = 0;
     flagSuccess = PyTuple_SetItem(outputTuple, 0, addMatArray);
